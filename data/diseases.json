@@ -1,0 +1,220 @@
+[
+  {
+    "id": 1,
+    "name": "Tomato Late Blight",
+    "description": "A devastating disease that affects tomatoes and potatoes, caused by the pathogen Phytophthora infestans.",
+    "severity": "high",
+    "symptoms": [
+      "Dark brown or black lesions on leaves",
+      "White fuzzy growth on leaf undersides",
+      "Brown spots on fruits",
+      "Rapid plant death in humid conditions"
+    ],
+    "treatments": [
+      "Apply copper-based fungicide immediately",
+      "Remove and destroy infected plants",
+      "Improve air circulation",
+      "Avoid overhead watering",
+      "Apply preventive fungicide sprays"
+    ],
+    "prevention": [
+      "Choose resistant varieties",
+      "Ensure proper spacing for air circulation",
+      "Water at soil level only",
+      "Remove plant debris after harvest",
+      "Rotate crops with non-susceptible plants"
+    ],
+    "crops": ["tomato", "potato"],
+    "optimal_conditions": "Cool, humid weather (15-20°C with high humidity)",
+    "geographic_regions": ["East Africa", "Central Kenya", "Highlands"]
+  },
+  {
+    "id": 2,
+    "name": "Maize Streak Virus",
+    "description": "A viral disease affecting maize crops, transmitted by leafhoppers.",
+    "severity": "medium",
+    "symptoms": [
+      "Yellow streaks parallel to leaf veins",
+      "Stunted plant growth",
+      "Reduced kernel formation",
+      "Chlorotic streaking patterns"
+    ],
+    "treatments": [
+      "Control leafhopper vectors with insecticides",
+      "Remove infected plants early",
+      "Use resistant maize varieties",
+      "Apply reflective mulch to deter vectors"
+    ],
+    "prevention": [
+      "Plant resistant varieties",
+      "Early planting to avoid peak vector activity",
+      "Remove volunteer maize plants",
+      "Monitor and control leafhoppers"
+    ],
+    "crops": ["maize", "corn"],
+    "optimal_conditions": "Warm, dry conditions with leafhopper activity",
+    "geographic_regions": ["Sub-Saharan Africa", "Kenya", "Tanzania"]
+  },
+  {
+    "id": 3,
+    "name": "Coffee Berry Disease",
+    "description": "Fungal disease affecting coffee plants, particularly the berries.",
+    "severity": "high",
+    "symptoms": [
+      "Dark sunken lesions on berries",
+      "Premature berry drop",
+      "Black spots on leaves and stems",
+      "Reduced coffee quality"
+    ],
+    "treatments": [
+      "Apply copper-based fungicides",
+      "Prune affected branches",
+      "Improve plantation hygiene",
+      "Time fungicide applications with rainfall"
+    ],
+    "prevention": [
+      "Plant resistant coffee varieties",
+      "Maintain proper spacing",
+      "Regular pruning for air circulation",
+      "Remove fallen berries and leaves"
+    ],
+    "crops": ["coffee"],
+    "optimal_conditions": "High altitude, cool temperatures, and high humidity",
+    "geographic_regions": ["Coffee highlands", "Central Kenya", "Ethiopian highlands"]
+  },
+  {
+    "id": 4,
+    "name": "Bean Common Mosaic Virus",
+    "description": "Viral disease affecting bean plants, causing mosaic patterns on leaves.",
+    "severity": "medium",
+    "symptoms": [
+      "Mosaic patterns on leaves",
+      "Leaf curling and distortion",
+      "Stunted plant growth",
+      "Reduced pod formation"
+    ],
+    "treatments": [
+      "Remove infected plants immediately",
+      "Control aphid vectors",
+      "Use virus-free seeds",
+      "Apply insecticides for aphid control"
+    ],
+    "prevention": [
+      "Use certified virus-free seeds",
+      "Plant resistant varieties",
+      "Control aphid populations",
+      "Avoid working with wet plants"
+    ],
+    "crops": ["beans", "common bean"],
+    "optimal_conditions": "Moderate temperatures with aphid activity",
+    "geographic_regions": ["Temperate regions", "East Africa", "Bean growing areas"]
+  },
+  {
+    "id": 5,
+    "name": "Banana Bacterial Wilt",
+    "description": "Bacterial disease causing wilting and death of banana plants.",
+    "severity": "high",
+    "symptoms": [
+      "Yellowing of leaves starting from edges",
+      "Premature flowering",
+      "Bacterial ooze from cut stems",
+      "Plant death within months"
+    ],
+    "treatments": [
+      "Remove and destroy infected plants",
+      "Disinfect tools between plants",
+      "Use clean planting material",
+      "Implement quarantine measures"
+    ],
+    "prevention": [
+      "Use disease-free planting material",
+      "Avoid wounds on plants",
+      "Control insect vectors",
+      "Practice crop rotation where possible"
+    ],
+    "crops": ["banana", "plantain"],
+    "optimal_conditions": "Warm, humid conditions",
+    "geographic_regions": ["East Africa", "Uganda", "Tanzania", "Kenya"]
+  },
+  {
+    "id": 6,
+    "name": "Cassava Mosaic Disease",
+    "description": "Viral disease causing mosaic patterns and stunting in cassava plants.",
+    "severity": "medium",
+    "symptoms": [
+      "Mosaic patterns on leaves",
+      "Leaf distortion and curling",
+      "Stunted plant growth",
+      "Reduced root yield"
+    ],
+    "treatments": [
+      "Use resistant varieties",
+      "Remove infected plants",
+      "Control whitefly vectors",
+      "Use clean planting material"
+    ],
+    "prevention": [
+      "Plant resistant cassava varieties",
+      "Use virus-tested cuttings",
+      "Control whitefly populations",
+      "Remove volunteer plants"
+    ],
+    "crops": ["cassava"],
+    "optimal_conditions": "Warm conditions with whitefly activity",
+    "geographic_regions": ["Sub-Saharan Africa", "East Africa", "West Africa"]
+  },
+  {
+    "id": 7,
+    "name": "Wheat Rust",
+    "description": "Fungal disease affecting wheat crops, causing rust-colored spots.",
+    "severity": "high",
+    "symptoms": [
+      "Orange to rust-colored spots on leaves",
+      "Pustules breaking through leaf surface",
+      "Yellowing and death of leaves",
+      "Reduced grain quality and yield"
+    ],
+    "treatments": [
+      "Apply fungicides at first sign",
+      "Use resistant wheat varieties",
+      "Implement crop rotation",
+      "Remove infected crop residue"
+    ],
+    "prevention": [
+      "Plant resistant varieties",
+      "Monitor weather conditions",
+      "Ensure proper field sanitation",
+      "Time planting to avoid peak infection periods"
+    ],
+    "crops": ["wheat"],
+    "optimal_conditions": "Cool, humid weather during growing season",
+    "geographic_regions": ["Wheat growing regions", "Temperate zones", "Highland areas"]
+  },
+  {
+    "id": 8,
+    "name": "Sweet Potato Weevil",
+    "description": "Insect pest that damages sweet potato tubers and vines.",
+    "severity": "medium",
+    "symptoms": [
+      "Holes in sweet potato tubers",
+      "Dark tunnels through tubers",
+      "Bitter taste in affected tubers",
+      "Wilting of vines"
+    ],
+    "treatments": [
+      "Use pheromone traps",
+      "Apply approved insecticides",
+      "Practice crop rotation",
+      "Harvest early if infestation occurs"
+    ],
+    "prevention": [
+      "Use certified planting material",
+      "Practice field sanitation",
+      "Avoid planting near infected fields",
+      "Monitor regularly for adult weevils"
+    ],
+    "crops": ["sweet potato"],
+    "optimal_conditions": "Warm, dry conditions",
+    "geographic_regions": ["Tropical and subtropical regions", "East Africa", "Coastal areas"]
+  }
+]
