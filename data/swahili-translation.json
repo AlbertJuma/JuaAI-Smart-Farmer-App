@@ -1,0 +1,217 @@
+{
+  "app_title": "JuaAI Mkulima Akili",
+  "navigation": {
+    "dashboard": "Dashibodi",
+    "weather": "Hali ya Anga",
+    "crops": "Mazao",
+    "tips": "Mapendekezo"
+  },
+  "dashboard": {
+    "title": "Dashibodi ya Shamba",
+    "current_weather": "Hali ya Anga ya Sasa",
+    "recent_scans": "Uchunguzi wa Hivi Karibuni",
+    "quick_tips": "Mapendekezo ya Haraka",
+    "no_recent_scans": "Hakuna uchunguzi wa hivi karibuni",
+    "loading_weather": "Inapakia hali ya anga...",
+    "loading_tips": "Inapakia mapendekezo ya kilimo..."
+  },
+  "weather": {
+    "title": "Utabiri wa Hali ya Anga",
+    "enter_location": "Ingiza mahali ulipo",
+    "get_weather": "Pata Hali ya Anga",
+    "current_weather": "Hali ya Anga ya Sasa",
+    "forecast": "Utabiri wa Siku 5",
+    "humidity": "Unyevu",
+    "wind": "Upepo",
+    "temperature": "Joto"
+  },
+  "crops": {
+    "title": "Ugunduzi wa Magonjwa ya Mazao",
+    "upload_instruction": "Piga au Pakia Picha ya Kizazi",
+    "upload_hint": "Bofya ili kuchagua au buruta picha hapa",
+    "analyze_crop": "Chunguza Kizazi",
+    "analysis_result": "Matokeo ya Uchunguzi",
+    "image_ready": "Picha iko tayari kwa uchunguzi"
+  },
+  "tips": {
+    "title": "Mapendekezo na Ushauri wa Kilimo",
+    "language": "Lugha",
+    "categories": {
+      "soil_management": "Usimamizi wa Udongo",
+      "water_management": "Usimamizi wa Maji",
+      "pest_control": "Udhibiti wa Wadudu",
+      "crop_planning": "Mpangilio wa Mazao",
+      "soil_fertility": "Rutuba ya Udongo",
+      "planting": "Kupanda",
+      "irrigation": "Umwagiliaji",
+      "post_harvest": "Baada ya Kuvuna",
+      "seed_management": "Usimamizi wa Mbegu",
+      "organic_farming": "Kilimo cha Kikaboni",
+      "protected_agriculture": "Kilimo cha Kinga",
+      "marketing": "Masoko",
+      "weather_management": "Usimamizi wa Hali ya Anga",
+      "mixed_farming": "Kilimo cha Mchanganyiko",
+      "soil_conservation": "Uhifadhi wa Udongo",
+      "farm_management": "Usimamizi wa Shamba",
+      "value_addition": "Kuongeza Thamani",
+      "cooperation": "Ushirikiano",
+      "climate_adaptation": "Kubadilika kwa Hali ya Anga"
+    }
+  },
+  "analysis": {
+    "healthy": "Mzuri",
+    "disease_detected": "Ugonjwa Umegunduliwa",
+    "confidence": "Uhakika",
+    "symptoms": "Dalili",
+    "recommendations": "Mapendekezo",
+    "prevention": "Kinga",
+    "treatments": "Matibabu",
+    "severity": {
+      "low": "Chini",
+      "medium": "Kati",
+      "high": "Juu"
+    }
+  },
+  "diseases": {
+    "tomato_late_blight": "Ugonjwa wa Nyanya wa Mwisho",
+    "maize_streak_virus": "Virusi ya Mstari wa Mahindi",
+    "coffee_berry_disease": "Ugonjwa wa Jetu la Kahawa",
+    "bean_common_mosaic_virus": "Virusi ya Kawaida ya Maharage",
+    "banana_bacterial_wilt": "Kunyauka kwa Ndizi kwa Bakteria",
+    "cassava_mosaic_disease": "Ugonjwa wa Mosaic wa Muhogo",
+    "wheat_rust": "Kutu ya Ngano",
+    "sweet_potato_weevil": "Kiwajiwa cha Viazi Vitamu"
+  },
+  "messages": {
+    "loading": "Inapakia...",
+    "processing": "Inachakata...",
+    "error": "Hitilafu imetokea",
+    "success": "Umefaulu",
+    "weather_updated": "Hali ya anga imesasishwa kikamilifu!",
+    "analysis_completed": "Uchunguzi wa mazao umekamilika!",
+    "error_weather": "Hitilafu ya kupata hali ya anga. Kutumia data ya mfano.",
+    "error_analysis": "Hitilafu ya kuchambua picha. Tafadhali jaribu tena."
+  },
+  "swahili_tips": [
+    {
+      "id": 1,
+      "title": "Kutayarisha Udongo",
+      "description": "Pima asidi ya udongo kabla ya kupanda. Mazao mengi yanafanikiwa katika udongo wa asidi kidogo hadi wa wastani (pH 6.0-7.0). Ongeza chokaa kuongeza pH au viungo vya kikaboni kupunguza asidi kwa njia ya asili.",
+      "category": "Usimamizi wa Udongo"
+    },
+    {
+      "id": 2,
+      "title": "Mbinu za Kuhifadhi Maji",
+      "description": "Tumia malezi ili kuhifadhi unyevu wa udongo na kupunguza mvukizo. Tumia malezi ya kikaboni kama majani makavu, majani, au mabaki ya mazao karibu na mimea ili kuhifadhi maji wakati wa kiangazi.",
+      "category": "Usimamizi wa Maji"
+    },
+    {
+      "id": 3,
+      "title": "Usimamizi wa Wadudu ulio Kamili",
+      "description": "Changanya mbinu za kibiolojia, kitamaduni, na za kikemia za kudhibiti wadudu. Tumia wadudu wazuri, mzunguko wa mazao, mazao ya kati, na matumizi ya dawa za wadudu kwa lengo tu inapohitajika.",
+      "category": "Udhibiti wa Wadudu"
+    },
+    {
+      "id": 4,
+      "title": "Mzunguko wa Mazao kwa Afya ya Udongo",
+      "description": "Zungushia mikunde (maharage, njegere) na nafaka (mahindi, ngano) ili kuimarisha naitrojeni katika udongo kwa njia ya asili. Fuata mimea inayohitaji chakula nyingi na ile isiyohitaji nyingi ili kudumisha rutuba ya udongo.",
+      "category": "Mpangilio wa Mazao"
+    },
+    {
+      "id": 5,
+      "title": "Kufanya Mbolea kwa Usimamizi wa Virutubisho",
+      "description": "Tengeneza mbolea kutoka mapishi, taka za shambani, na vifaa vya kijani. Hii huboresha muundo wa udongo, hutoa virutubisho vya kupunguza polepole, na huongeza kuhifadhi maji.",
+      "category": "Rutuba ya Udongo"
+    },
+    {
+      "id": 6,
+      "title": "Majira Bora ya Kupanda",
+      "description": "Panda mwanzoni mwa misimu ya mvua kwa kilimo kinachotegemea mvua. Kwa mahindi nchini Kenya, panda Machi-Mei kwa mvua za kirefu na Oktoba-Desemba kwa mvua za kifupi.",
+      "category": "Kupanda"
+    },
+    {
+      "id": 7,
+      "title": "Kuanzisha Umwagiliaji wa Tone",
+      "description": "Sakinisha umwagiliaji rahisi wa tone kwa kutumia chupa za plastiki au mipaipu yenye mashimo. Hii huokoa maji na kuipeleka moja kwa moja kwenye mizizi ya mimea, kupunguza magonjwa na magugu.",
+      "category": "Umwagiliaji"
+    },
+    {
+      "id": 8,
+      "title": "Faida za Mazao ya Kati",
+      "description": "Panda mazao yanayoambatana pamoja kama mahindi na maharage. Maharage huthibitisha naitrojeni kwa mahindi wakati mahindi hutoa msaada kwa maharage ya kupanda, kuongeza matumizi ya ardhi.",
+      "category": "Mpangilio wa Mazao"
+    },
+    {
+      "id": 9,
+      "title": "Kushughulikia Baada ya Kuvuna",
+      "description": "Vuna asubuhi mapema wakati joto ni baridi. Shughulikia mazao kwa upole, safisha vizuri, na uhifadhi katika maeneo baridi na makavu ili kudumisha ubora na kuongeza muda wa uhifadhi.",
+      "category": "Baada ya Kuvuna"
+    },
+    {
+      "id": 10,
+      "title": "Kuchagua na Kuhifadhi Mbegu",
+      "description": "Chagua mbegu kutoka kwa mimea mizuri na yenye mazao mengi. Kausha mbegu vizuri (unyevu wa 12-14%) na uhifadhi katika chombo kisichopita hewa pamoja na majivu ya mbao au udongo wa diatomaceous ili kuzuia wadudu.",
+      "category": "Usimamizi wa Mbegu"
+    },
+    {
+      "id": 11,
+      "title": "Kutayarisha Dawa za Wadudu za Asili",
+      "description": "Tengeneza dawa za wadudu za asili kwa kutumia majani ya mwarobaini, kitunguu saumu, pilipili kali, na sabuni. Changanya, chuja, na nyunyiza kwenye mimea iliyoathiriwa wakati wa masaa baridi ili kudhibiti wadudu kwa njia ya kikaboni.",
+      "category": "Kilimo cha Kikaboni"
+    },
+    {
+      "id": 12,
+      "title": "Faida za Kilimo cha Nyumba za Miwani",
+      "description": "Tumia nyumba za miwani rahisi au mapango kuongeza misimu ya ukuaji, kulinda mazao kutokana na hali mbaya ya anga, na kuongeza mazao kwa kila mita mraba, hasa kwa mazao ya thamani kubwa.",
+      "category": "Kilimo cha Kinga"
+    },
+    {
+      "id": 13,
+      "title": "Mipango ya Wakati wa Soko",
+      "description": "Fanya utafiti wa bei za soko na mahitaji kabla ya kupanda. Panda kwa awamu ili kuhakikisha kuvuna kila wakati na kuepuka wingi wa soko unaopunguza bei.",
+      "category": "Masoko"
+    },
+    {
+      "id": 14,
+      "title": "Kufuatilia Hali ya Anga",
+      "description": "Tumia utabiri wa hali ya anga wa mitaa na viashiria vya jadi kupanga shughuli za kilimo. Fuatilia mifumo ya mvua, mabadiliko ya joto, na tofauti za misimu kwa mpangilio bora.",
+      "category": "Usimamizi wa Hali ya Anga"
+    },
+    {
+      "id": 15,
+      "title": "Muunganiko wa Mifugo",
+      "description": "Unganisha mifugo midogo (kuku, mbuzi) na uzalishaji wa mazao. Wanyamapori hutoa mbolea kwa mazao wakati mabaki ya mazao hulisha wanyamapori, kuunda mfumo endelevu wa kilimo.",
+      "category": "Kilimo cha Mchanganyiko"
+    },
+    {
+      "id": 16,
+      "title": "Mbinu za Kudhibiti Mmomonyoko",
+      "description": "Tumia kilimo cha mlolongo, kujenga mapaa, na vipande vya nyasi ili kuzuia mmomonyoko wa udongo katika miteremko. Panda mazao ya kufunika wakati wa nje ya misimu ili kulinda udongo na kuongeza viungo vya kikaboni.",
+      "category": "Uhifadhi wa Udongo"
+    },
+    {
+      "id": 17,
+      "title": "Kuhifadhi Rekodi kwa Wakulima",
+      "description": "Hifadhi rekodi za kina za tarehe za kupanda, pembejeo zilizotumika, gharama, mazao, na mauzo. Hii husaidia kufuatilia faida na kuboresha maamuzi kwa misimu ijayo.",
+      "category": "Usimamizi wa Shamba"
+    },
+    {
+      "id": 18,
+      "title": "Fursa za Kuongeza Thamani",
+      "description": "Chakata mazao ya shambani kuwa bidhaa za thamani kubwa kama matunda makavu, unga, au achali. Hii huongeza mapato na kupunguza hasara za baada ya kuvuna wakati wa vipindi vya kilele.",
+      "category": "Kuongeza Thamani"
+    },
+    {
+      "id": 19,
+      "title": "Vikundi vya Kilimo vya Jumuiya",
+      "description": "Jiunge au unda vikundi vya wakulima kushiriki maarifa, kununua pembejeo kwa wingi, kupata mkopo, na kushirikiana katika uuzaji wa mazao kwa bei bora na gharama ndogo.",
+      "category": "Ushirikiano"
+    },
+    {
+      "id": 20,
+      "title": "Kilimo cha Akili cha Tabianchi",
+      "description": "Kubali mazoea yanayoongeza uzalishaji huku ukikabiliana na mabadiliko ya tabianchi. Tumia aina za kustahamili ukame, umwagiliaji makubwa, na mbinu za kufunga kaboni.",
+      "category": "Kubadilika kwa Hali ya Anga"
+    }
+  ]
+}

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JuaAI Smart Farmer</title>
+    <meta name="description" content="AI-powered farming assistance for better crop management">
+    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4CAF50">
+    <link rel="icon" href="icons/app-icon.png" type="image/png">
+</head>
+<body>
+    <div id="app">
+        <header class="header">
+            <div class="container">
+                <h1 class="logo">🌱 JuaAI Smart Farmer</h1>
+                <nav class="nav">
+                    <button class="nav-btn active" data-tab="dashboard">Dashboard</button>
+                    <button class="nav-btn" data-tab="weather">Weather</button>
+                    <button class="nav-btn" data-tab="crops">Crop AI</button>
+                    <button class="nav-btn" data-tab="tips">Tips</button>
+                </nav>
+            </div>
+        </header>
+
+        <main class="main">
+            <div class="container">
+                <!-- Dashboard Tab -->
+                <section id="dashboard" class="tab-content active">
+                    <h2>Farm Dashboard</h2>
+                    <div class="cards-grid">
+                        <div class="card">
+                            <h3>🌡️ Current Weather</h3>
+                            <div id="current-weather">
+                                <p>Loading weather data...</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h3>🌾 Recent Scans</h3>
+                            <div id="recent-scans">
+                                <p>No recent crop scans</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h3>💡 Quick Tips</h3>
+                            <div id="quick-tips">
+                                <p>Loading farming tips...</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Weather Tab -->
+                <section id="weather" class="tab-content">
+                    <h2>Weather Forecast</h2>
+                    <div class="weather-section">
+                        <div class="location-input">
+                            <input type="text" id="location" placeholder="Enter your location" value="Nairobi, Kenya">
+                            <button id="get-weather">Get Weather</button>
+                        </div>
+                        <div id="weather-display">
+                            <div class="weather-card">
+                                <h3>Current Weather</h3>
+                                <div id="current-weather-detail">Click "Get Weather" to load data</div>
+                            </div>
+                            <div class="weather-card">
+                                <h3>5-Day Forecast</h3>
+                                <div id="forecast-display">Click "Get Weather" to load forecast</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Crop AI Tab -->
+                <section id="crops" class="tab-content">
+                    <h2>Crop Disease Detection</h2>
+                    <div class="crop-ai-section">
+                        <div class="image-upload">
+                            <div class="upload-area" id="upload-area">
+                                <input type="file" id="crop-image" accept="image/*">
+                                <div class="upload-content">
+                                    <p>📸 Take or Upload Crop Photo</p>
+                                    <p class="upload-hint">Click to select or drag image here</p>
+                                </div>
+                            </div>
+                            <button id="analyze-crop" disabled>Analyze Crop</button>
+                        </div>
+                        <div id="analysis-result" class="analysis-result hidden">
+                            <h3>Analysis Result</h3>
+                            <div id="disease-result"></div>
+                            <div id="treatment-suggestions"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Tips Tab -->
+                <section id="tips" class="tab-content">
+                    <h2>Farming Tips & Advice</h2>
+                    <div class="tips-section">
+                        <div class="language-selector">
+                            <label for="language">Language:</label>
+                            <select id="language">
+                                <option value="en">English</option>
+                                <option value="sw">Kiswahili</option>
+                            </select>
+                        </div>
+                        <div class="tips-grid" id="tips-grid">
+                            <p>Loading farming tips...</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="container">
+                <p>&copy; 2024 JuaAI Smart Farmer. Empowering farmers with AI technology.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Loading overlay -->
+    <div id="loading" class="loading hidden">
+        <div class="spinner"></div>
+        <p>Processing...</p>
+    </div>
+
+    <!-- Scripts -->
+    <script src="scripts/storage.js"></script>
+    <script src="scripts/weather.js"></script>
+    <script src="scripts/cropAI.js"></script>
+    <script src="scripts/app.js"></script>
+
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(registration => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch(registrationError => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>

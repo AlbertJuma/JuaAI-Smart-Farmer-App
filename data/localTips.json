@@ -1,0 +1,182 @@
+[
+  {
+    "id": 1,
+    "title": "Soil Testing and Preparation",
+    "description": "Test your soil pH before planting. Most crops in Kenya thrive in slightly acidic to neutral soil (pH 6.0-7.0). Add lime to raise pH or organic matter to lower it naturally.",
+    "category": "Soil Management",
+    "season": "all",
+    "region": "nationwide",
+    "difficulty": "beginner"
+  },
+  {
+    "id": 2,
+    "title": "Water Conservation Techniques",
+    "description": "Use mulching to retain soil moisture and reduce evaporation. Apply organic mulch like dried grass, leaves, or crop residues around plants to conserve water during dry seasons.",
+    "category": "Water Management",
+    "season": "dry",
+    "region": "arid and semi-arid",
+    "difficulty": "beginner"
+  },
+  {
+    "id": 3,
+    "title": "Integrated Pest Management",
+    "description": "Combine biological, cultural, and chemical pest control methods. Use beneficial insects, crop rotation, intercropping, and targeted pesticide application only when necessary.",
+    "category": "Pest Control",
+    "season": "all",
+    "region": "nationwide",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": 4,
+    "title": "Crop Rotation for Soil Health",
+    "description": "Rotate legumes (beans, peas) with cereals (maize, wheat) to naturally fix nitrogen in soil. Follow heavy feeders with light feeders to maintain soil fertility.",
+    "category": "Crop Planning",
+    "season": "all",
+    "region": "nationwide",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": 5,
+    "title": "Composting for Nutrient Management",
+    "description": "Create compost from kitchen scraps, farm waste, and green materials. This improves soil structure, provides slow-release nutrients, and enhances water retention.",
+    "category": "Soil Fertility",
+    "season": "all",
+    "region": "nationwide",
+    "difficulty": "beginner"
+  },
+  {
+    "id": 6,
+    "title": "Optimal Planting Times",
+    "description": "Plant at the beginning of rainy seasons for rain-fed agriculture. For maize in Kenya, plant in March-May for long rains and October-December for short rains.",
+    "category": "Planting",
+    "season": "rainy",
+    "region": "nationwide",
+    "difficulty": "beginner"
+  },
+  {
+    "id": 7,
+    "title": "Drip Irrigation Setup",
+    "description": "Install simple drip irrigation using plastic bottles or pipes with holes. This saves water and delivers it directly to plant roots, reducing disease and weeds.",
+    "category": "Irrigation",
+    "season": "dry",
+    "region": "arid regions",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": 8,
+    "title": "Intercropping Benefits",
+    "description": "Plant complementary crops together like maize with beans. Beans fix nitrogen for maize while maize provides support for climbing beans, maximizing land use.",
+    "category": "Crop Planning",
+    "season": "all",
+    "region": "nationwide",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": 9,
+    "title": "Post-Harvest Handling",
+    "description": "Harvest early morning when temperatures are cool. Handle produce gently, clean thoroughly, and store in cool, dry places to maintain quality and extend shelf life.",
+    "category": "Post-Harvest",
+    "season": "harvest",
+    "region": "nationwide",
+    "difficulty": "beginner"
+  },
+  {
+    "id": 10,
+    "title": "Seed Selection and Storage",
+    "description": "Select seeds from healthy, productive plants. Dry seeds properly (12-14% moisture) and store in airtight containers with wood ash or diatomaceous earth to prevent pests.",
+    "category": "Seed Management",
+    "season": "all",
+    "region": "nationwide",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": 11,
+    "title": "Natural Pesticide Preparation",
+    "description": "Make natural pesticides using neem leaves, garlic, hot peppers, and soap. Blend, strain, and spray on affected plants during cool hours to control pests organically.",
+    "category": "Organic Farming",
+    "season": "all",
+    "region": "nationwide",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": 12,
+    "title": "Greenhouse Farming Benefits",
+    "description": "Use simple greenhouses or tunnels to extend growing seasons, protect crops from extreme weather, and increase yields per square meter, especially for high-value crops.",
+    "category": "Protected Agriculture",
+    "season": "all",
+    "region": "highland areas",
+    "difficulty": "advanced"
+  },
+  {
+    "id": 13,
+    "title": "Market Timing and Planning",
+    "description": "Research market prices and demand before planting. Stagger planting dates to ensure continuous harvest and avoid market gluts that reduce prices.",
+    "category": "Marketing",
+    "season": "all",
+    "region": "nationwide",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": 14,
+    "title": "Weather Monitoring",
+    "description": "Use local weather forecasts and traditional indicators to plan farming activities. Monitor rainfall patterns, temperature changes, and seasonal variations for better planning.",
+    "category": "Weather Management",
+    "season": "all",
+    "region": "nationwide",
+    "difficulty": "beginner"
+  },
+  {
+    "id": 15,
+    "title": "Livestock Integration",
+    "description": "Integrate small livestock (chickens, goats) with crop production. Animals provide manure for crops while crop residues feed animals, creating a sustainable farming system.",
+    "category": "Mixed Farming",
+    "season": "all",
+    "region": "rural areas",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": 16,
+    "title": "Erosion Control Methods",
+    "description": "Use contour farming, terracing, and grass strips to prevent soil erosion on slopes. Plant cover crops during off-seasons to protect soil and add organic matter.",
+    "category": "Soil Conservation",
+    "season": "all",
+    "region": "hilly areas",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": 17,
+    "title": "Record Keeping for Farmers",
+    "description": "Keep detailed records of planting dates, inputs used, costs, yields, and sales. This helps track profitability and improve decision-making for future seasons.",
+    "category": "Farm Management",
+    "season": "all",
+    "region": "nationwide",
+    "difficulty": "beginner"
+  },
+  {
+    "id": 18,
+    "title": "Value Addition Opportunities",
+    "description": "Process farm produce into higher-value products like dried fruits, flour, or pickles. This increases income and reduces post-harvest losses during peak seasons.",
+    "category": "Value Addition",
+    "season": "harvest",
+    "region": "nationwide",
+    "difficulty": "advanced"
+  },
+  {
+    "id": 19,
+    "title": "Community Farming Groups",
+    "description": "Join or form farmer groups to share knowledge, bulk purchase inputs, access credit, and collectively market produce for better prices and reduced costs.",
+    "category": "Cooperation",
+    "season": "all",
+    "region": "nationwide",
+    "difficulty": "beginner"
+  },
+  {
+    "id": 20,
+    "title": "Climate-Smart Agriculture",
+    "description": "Adopt practices that increase productivity while adapting to climate change. Use drought-resistant varieties, efficient irrigation, and carbon-sequestering techniques.",
+    "category": "Climate Adaptation",
+    "season": "all",
+    "region": "nationwide",
+    "difficulty": "advanced"
+  }
+]
