@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Flask
+instance/
+.webassets-cache
+
+# Dataset and model files
+dataset/
+*.h5
+model_info.json
+
+# Temporary files
+*.tmp
+*.log
+test_*.jpg
+test_*.png
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node modules (if any)
+node_modules/

@@ -5,23 +5,27 @@ An AI-powered Progressive Web Application designed to assist farmers with crop m
 ## ✨ Features
 
 ### 🎯 Core Functionality
-- **Crop Disease Detection**: AI-powered image analysis to identify plant diseases and pests
+- **AI-Powered Crop Disease Detection**: Real machine learning model trained to classify plant leaves as healthy or diseased
+- **Intelligent Analysis**: TensorFlow/Keras model with confidence scoring and treatment recommendations
+- **Flexible Processing**: Seamless fallback between AI backend and local processing
 - **Weather Forecasting**: Real-time weather data and 5-day forecasts for farming decisions
 - **Farming Tips**: Localized agricultural advice and best practices
 - **Multi-language Support**: Available in English and Kiswahili
 - **Offline Functionality**: Works without internet connection using Progressive Web App technology
+
+### 🤖 AI-Powered Disease Detection
+- **Machine Learning Model**: Trained TensorFlow/Keras model for accurate plant health assessment
+- **Real-time Analysis**: Upload photos for instant disease detection
+- **Treatment Recommendations**: Specific treatment plans based on detected conditions
+- **Prevention Tips**: Proactive advice to prevent common agricultural issues
+- **Confidence Scoring**: Transparent confidence levels for all predictions
+- **Fallback Processing**: Continues to work even when AI backend is unavailable
 
 ### 📱 Progressive Web App (PWA)
 - **Installable**: Can be installed on mobile devices and desktops
 - **Offline Capable**: Core features work without internet
 - **Responsive Design**: Optimized for all screen sizes
 - **Fast Loading**: Cached resources for instant access
-
-### 🔬 AI-Powered Analysis
-- Disease identification from crop photos
-- Treatment recommendations based on detected conditions
-- Prevention tips for common agricultural issues
-- Confidence scoring for analysis results
 
 ### 🌍 Localized Content
 - Farming tips specific to East African agriculture
@@ -33,17 +37,49 @@ An AI-powered Progressive Web Application designed to assist farmers with crop m
 
 ### Prerequisites
 - Modern web browser (Chrome, Firefox, Safari, Edge)
+- Python 3.8+ (for AI backend)
 - Internet connection for initial setup
 - Camera-enabled device for crop analysis (optional)
 
-### Installation
+### Installation Options
 
-#### Option 1: Direct Access
+#### Option 1: Quick Start (Frontend Only)
 1. Open your web browser
 2. Navigate to the app URL
-3. The app will load and be ready to use
+3. The app will load with local processing capabilities
 
-#### Option 2: Install as PWA
+#### Option 2: Full AI Setup (Recommended)
+
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/AlbertJuma/JuaAI-Smart-Farmer-App.git
+   cd JuaAI-Smart-Farmer-App
+   ```
+
+2. **Install Python Dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Prepare Dataset (Optional)**
+   ```bash
+   python prepare_dataset.py
+   ```
+
+4. **Train Model (Optional)**
+   ```bash
+   python train_model.py
+   ```
+
+5. **Start Flask Backend**
+   ```bash
+   python app.py
+   ```
+
+6. **Access the Application**
+   Open your browser and go to `http://localhost:5000`
+
+#### Option 3: Install as PWA
 1. Open the app in your browser
 2. Look for "Install App" or "Add to Home Screen" option
 3. Follow the browser prompts to install
@@ -65,17 +101,58 @@ An AI-powered Progressive Web Application designed to assist farmers with crop m
 - Take or upload a photo of your crop
 - Wait for AI analysis (2-5 seconds)
 - Review disease identification and treatment recommendations
+- Get specific treatment plans and prevention tips
 
 #### 4. Farming Tips
 - Browse categorized agricultural advice
 - Switch between English and Kiswahili
 - Find tips specific to your farming needs
 
+## 🔧 AI Model Training
+
+### Dataset Preparation
+The app includes a dataset preparation script that creates sample data for training:
+
+```bash
+python prepare_dataset.py
+```
+
+This script:
+- Creates a structured dataset with healthy and diseased plant images
+- Preprocesses images for optimal model performance
+- Generates sample data for demonstration purposes
+
+### Model Training
+Train your own plant disease classification model:
+
+```bash
+python train_model.py
+```
+
+The training script:
+- Creates a CNN model using TensorFlow/Keras
+- Trains on the prepared dataset
+- Saves the model as `model.h5` for use by the Flask backend
+- Includes data augmentation and validation
+
+### Model Architecture
+- **Input**: 224x224x3 RGB images
+- **Architecture**: Convolutional Neural Network (CNN)
+- **Output**: Binary classification (healthy/diseased)
+- **Features**: Data augmentation, dropout for regularization
+- **Format**: Saved as HDF5 (.h5) format
+
 ## 📁 Project Structure
 
 ```
 JuaAI-Smart-Farmer-App/
 ├── index.html                 # Main application interface
+├── app.py                     # Flask backend for AI predictions
+├── requirements.txt           # Python dependencies
+├── prepare_dataset.py         # Dataset preparation script
+├── train_model.py            # Model training script
+├── model.h5                  # Trained TensorFlow model
+├── model_info.json          # Model metadata
 ├── styles/
 │   └── styles.css            # Application styling and responsive design
 ├── scripts/
@@ -87,6 +164,10 @@ JuaAI-Smart-Farmer-App/
 │   ├── diseases.json         # Crop disease database
 │   ├── localTips.json        # Farming tips and advice
 │   └── swahili-translation.json # Multilingual support data
+├── dataset/                  # Training dataset (created by prepare_dataset.py)
+│   ├── healthy/              # Healthy plant images
+│   ├── diseased/             # Diseased plant images
+│   └── processed/            # Preprocessed images for training
 ├── images/
 │   └── sample-leaf.svg       # Sample crop image for demonstration
 ├── icons/
@@ -101,10 +182,26 @@ JuaAI-Smart-Farmer-App/
 
 ### Technologies Used
 - **Frontend**: HTML5, CSS3, JavaScript (ES6+)
-- **Architecture**: Progressive Web App (PWA)
+- **Backend**: Flask (Python web framework)
+- **AI/ML**: TensorFlow 2.x, Keras for deep learning
+- **Image Processing**: PIL (Python Imaging Library), OpenCV
+- **Architecture**: Progressive Web App (PWA) with REST API backend
 - **Storage**: Local Storage, IndexedDB (via abstraction)
 - **Offline**: Service Worker for caching and offline functionality
 - **Responsive**: CSS Grid and Flexbox for mobile-first design
+
+### AI Model Details
+- **Framework**: TensorFlow/Keras
+- **Model Type**: Convolutional Neural Network (CNN)
+- **Input Size**: 224x224 pixels, RGB images
+- **Classes**: Binary classification (healthy/diseased)
+- **Training**: Includes data augmentation and validation
+- **Deployment**: Served via Flask REST API
+
+### API Endpoints
+- `GET /api/health` - Backend health check
+- `POST /api/predict` - Image upload and disease prediction
+- `GET /api/model-info` - Model information and capabilities
 
 ### Browser Support
 - Chrome 70+

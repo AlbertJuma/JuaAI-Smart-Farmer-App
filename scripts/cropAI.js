@@ -2,7 +2,10 @@
 class CropAI {
     constructor() {
         this.diseases = null;
+        this.backendUrl = 'http://localhost:5000';  // Flask backend URL
+        this.backendAvailable = false;
         this.loadDiseaseDatabase();
+        this.checkBackendStatus();
     }
 
     async loadDiseaseDatabase() {
@@ -15,30 +18,153 @@ class CropAI {
         }
     }
 
+    async checkBackendStatus() {
+        try {
+            const response = await fetch(`${this.backendUrl}/api/health`, {
+                method: 'GET',
+                timeout: 5000
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                this.backendAvailable = true;
+                this.updateBackendStatus(true, data);
+            } else {
+                this.backendAvailable = false;
+                this.updateBackendStatus(false);
+            }
+        } catch (error) {
+            console.log('Backend not available:', error.message);
+            this.backendAvailable = false;
+            this.updateBackendStatus(false);
+        }
+    }
+
+    updateBackendStatus(available, data = null) {
+        const indicator = document.getElementById('backend-indicator');
+        if (!indicator) return;
+
+        if (available) {
+            indicator.innerHTML = '🤖 AI Backend Connected';
+            indicator.className = 'status-connected';
+            if (data && !data.tensorflow_available) {
+                indicator.innerHTML += ' (Demo Mode)';
+            }
+        } else {
+            indicator.innerHTML = '💻 Local Processing Only';
+            indicator.className = 'status-local';
+        }
+    }
+
     async analyzeImage(imageFile) {
         try {
             app.showLoading(true);
             
-            // Simulate AI analysis with realistic delay
-            await this.delay(2000 + Math.random() * 3000);
+            // Try to use the backend API first
+            const result = await this.analyzeWithBackend(imageFile);
             
-            // For demo purposes, simulate analysis based on file properties
-            const analysisResult = this.simulateAnalysis(imageFile);
-            
-            // Store the analysis result
-            storageManager.saveAnalysisResult(analysisResult);
-            
-            // Display the result
-            this.displayAnalysisResult(analysisResult);
-            
-            app.showNotification('Crop analysis completed!', 'success');
+            if (result && result.status === 'success') {
+                // Process backend result
+                const analysisResult = this.processBackendResult(result, imageFile);
+                
+                // Store the analysis result
+                storageManager.saveAnalysisResult(analysisResult);
+                
+                // Display the result
+                this.displayAnalysisResult(analysisResult);
+                
+                app.showNotification('Crop analysis completed!', 'success');
+            } else {
+                // Fallback to mock analysis
+                console.log('Backend analysis failed, using fallback');
+                await this.fallbackAnalysis(imageFile);
+            }
             
         } catch (error) {
             console.error('Analysis error:', error);
-            app.showNotification('Error analyzing image. Please try again.', 'error');
+            // Fallback to mock analysis on error
+            await this.fallbackAnalysis(imageFile);
         } finally {
             app.showLoading(false);
         }
+    }
+
+    async analyzeWithBackend(imageFile) {
+        try {
+            // Create FormData to send image
+            const formData = new FormData();
+            formData.append('image', imageFile);
+
+            // Send request to backend
+            const response = await fetch(`${this.backendUrl}/api/predict`, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+
+            const result = await response.json();
+            return result;
+
+        } catch (error) {
+            console.error('Backend analysis failed:', error);
+            return null;
+        }
+    }
+
+    processBackendResult(backendResult, imageFile) {
+        const prediction = backendResult.prediction;
+        const confidence = backendResult.confidence * 100; // Convert to percentage
+        
+        let analysisResult = {
+            id: Date.now(),
+            date: new Date().toISOString(),
+            status: prediction === 'healthy' ? 'healthy' : 'disease_detected',
+            confidence: confidence,
+            result: prediction === 'healthy' ? 'Healthy Crop' : 'Disease Detected',
+            description: prediction === 'healthy' 
+                ? 'Your crop appears to be healthy with no visible signs of disease.'
+                : 'The AI has detected signs of disease in your crop.',
+            recommendations: [],
+            severity: prediction === 'healthy' ? 'none' : 'medium',
+            color: prediction === 'healthy' ? '#4CAF50' : '#FF9800',
+            fromBackend: true
+        };
+
+        // Add treatment suggestions from backend
+        if (backendResult.treatment) {
+            if (prediction === 'healthy' && backendResult.treatment.maintenance) {
+                analysisResult.recommendations = backendResult.treatment.maintenance;
+            } else if (prediction === 'diseased' && backendResult.treatment.immediate_actions) {
+                analysisResult.recommendations = [
+                    ...backendResult.treatment.immediate_actions,
+                    ...backendResult.treatment.treatments
+                ];
+                analysisResult.prevention = backendResult.treatment.prevention;
+            }
+        }
+
+        return analysisResult;
+    }
+
+    async fallbackAnalysis(imageFile) {
+        console.log('Using fallback mock analysis');
+        
+        // Add delay to simulate processing
+        await this.delay(2000 + Math.random() * 3000);
+        
+        // For demo purposes, simulate analysis based on file properties
+        const analysisResult = this.simulateAnalysis(imageFile);
+        
+        // Store the analysis result
+        storageManager.saveAnalysisResult(analysisResult);
+        
+        // Display the result
+        this.displayAnalysisResult(analysisResult);
+        
+        app.showNotification('Crop analysis completed (using local processing)!', 'success');
     }
 
     simulateAnalysis(imageFile) {
@@ -119,6 +245,7 @@ class CropAI {
                     <h4 style="color: ${result.color};">${result.result}</h4>
                     <span class="confidence">Confidence: ${Math.round(result.confidence)}%</span>
                 </div>
+                ${result.fromBackend ? '<div class="backend-indicator">🤖 AI Analysis</div>' : '<div class="fallback-indicator">💻 Local Analysis</div>'}
                 <p class="result-description">${result.description}</p>
                 ${result.symptoms && result.symptoms.length > 0 ? `
                     <div class="symptoms-section">
@@ -377,6 +504,54 @@ const cropAIStyles = `
 
     .prevention-list li {
         margin-bottom: 0.25rem;
+    }
+
+    .backend-indicator, .fallback-indicator {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+    }
+
+    .backend-indicator {
+        background: rgba(76, 175, 80, 0.1);
+        color: #2E7D32;
+        border: 1px solid rgba(76, 175, 80, 0.3);
+    }
+
+    .fallback-indicator {
+        background: rgba(255, 152, 0, 0.1);
+        color: #F57C00;
+        border: 1px solid rgba(255, 152, 0, 0.3);
+    }
+
+    .backend-status {
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+
+    .status-connected {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        background: rgba(76, 175, 80, 0.1);
+        color: #2E7D32;
+        border: 1px solid rgba(76, 175, 80, 0.3);
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: bold;
+    }
+
+    .status-local {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        background: rgba(255, 152, 0, 0.1);
+        color: #F57C00;
+        border: 1px solid rgba(255, 152, 0, 0.3);
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: bold;
     }
 
     @media (max-width: 768px) {
