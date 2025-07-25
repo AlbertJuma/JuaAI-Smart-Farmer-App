@@ -1,7 +1,8 @@
-// Crop AI analysis module
+// Crop AI analysis module with Flask backend integration
 class CropAI {
     constructor() {
         this.diseases = null;
+        this.backendUrl = 'http://localhost:5000';
         this.loadDiseaseDatabase();
     }
 
@@ -19,11 +20,73 @@ class CropAI {
         try {
             app.showLoading(true);
             
+            // Try to send to Flask backend first
+            const result = await this.analyzeWithBackend(imageFile);
+            
+            if (result) {
+                // Store the analysis result
+                storageManager.saveAnalysisResult(result);
+                
+                // Display the result
+                this.displayAnalysisResult(result);
+                
+                app.showNotification('Crop analysis completed!', 'success');
+            } else {
+                throw new Error('Backend analysis failed');
+            }
+            
+        } catch (error) {
+            console.error('Backend analysis error:', error);
+            app.showNotification('Backend unavailable. Using local analysis...', 'warning');
+            
+            // Fallback to local simulation
+            await this.analyzeImageLocally(imageFile);
+        } finally {
+            app.showLoading(false);
+        }
+    }
+
+    async analyzeWithBackend(imageFile) {
+        try {
+            // Create FormData for file upload
+            const formData = new FormData();
+            formData.append('file', imageFile);
+
+            // Send request to Flask backend
+            const response = await fetch(`${this.backendUrl}/predict`, {
+                method: 'POST',
+                body: formData,
+                // Don't set Content-Type header, let browser set it with boundary
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const result = await response.json();
+            
+            // Add metadata
+            result.id = Date.now();
+            result.date = new Date().toISOString();
+            result.source = 'backend';
+            
+            return result;
+            
+        } catch (error) {
+            console.error('Error communicating with backend:', error);
+            return null;
+        }
+    }
+
+    async analyzeImageLocally(imageFile) {
+        try {
             // Simulate AI analysis with realistic delay
             await this.delay(2000 + Math.random() * 3000);
             
             // For demo purposes, simulate analysis based on file properties
             const analysisResult = this.simulateAnalysis(imageFile);
+            analysisResult.source = 'local';
+            analysisResult.note = 'Analyzed locally - backend unavailable';
             
             // Store the analysis result
             storageManager.saveAnalysisResult(analysisResult);
@@ -31,13 +94,11 @@ class CropAI {
             // Display the result
             this.displayAnalysisResult(analysisResult);
             
-            app.showNotification('Crop analysis completed!', 'success');
+            app.showNotification('Local crop analysis completed!', 'success');
             
         } catch (error) {
-            console.error('Analysis error:', error);
+            console.error('Local analysis error:', error);
             app.showNotification('Error analyzing image. Please try again.', 'error');
-        } finally {
-            app.showLoading(false);
         }
     }
 
@@ -120,6 +181,7 @@ class CropAI {
                     <span class="confidence">Confidence: ${Math.round(result.confidence)}%</span>
                 </div>
                 <p class="result-description">${result.description}</p>
+                ${result.note ? `<p class="result-note"><em>${result.note}</em></p>` : ''}
                 ${result.symptoms && result.symptoms.length > 0 ? `
                     <div class="symptoms-section">
                         <h5>Symptoms:</h5>
@@ -128,6 +190,9 @@ class CropAI {
                         </ul>
                     </div>
                 ` : ''}
+                <div class="analysis-source">
+                    <small>Analysis source: ${result.source === 'backend' ? 'AI Backend' : 'Local Simulation'}</small>
+                </div>
             </div>
         `;
 
@@ -158,6 +223,40 @@ class CropAI {
 
         // Scroll to result
         resultContainer.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Check backend connectivity
+    async checkBackendHealth() {
+        try {
+            const response = await fetch(`${this.backendUrl}/`, {
+                method: 'GET',
+                timeout: 5000
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Backend status:', data);
+                return true;
+            }
+            return false;
+        } catch (error) {
+            console.error('Backend health check failed:', error);
+            return false;
+        }
+    }
+
+    // Get backend model information
+    async getModelInfo() {
+        try {
+            const response = await fetch(`${this.backendUrl}/model-info`);
+            if (response.ok) {
+                return await response.json();
+            }
+            return null;
+        } catch (error) {
+            console.error('Error getting model info:', error);
+            return null;
+        }
     }
 
     getFallbackDiseases() {
@@ -379,6 +478,20 @@ const cropAIStyles = `
         margin-bottom: 0.25rem;
     }
 
+    .analysis-source {
+        margin-top: 1rem;
+        padding-top: 0.5rem;
+        border-top: 1px solid #e0e0e0;
+        text-align: right;
+        color: #666;
+    }
+
+    .result-note {
+        font-style: italic;
+        color: #ff9800;
+        margin-top: 0.5rem;
+    }
+
     @media (max-width: 768px) {
         .result-header {
             flex-direction: column;
@@ -393,6 +506,10 @@ const cropAIStyles = `
 
         .rec-number {
             align-self: flex-start;
+        }
+
+        .analysis-source {
+            text-align: left;
         }
     }
 `;

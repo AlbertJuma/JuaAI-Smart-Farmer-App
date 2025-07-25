@@ -18,10 +18,13 @@ An AI-powered Progressive Web Application designed to assist farmers with crop m
 - **Fast Loading**: Cached resources for instant access
 
 ### 🔬 AI-Powered Analysis
-- Disease identification from crop photos
+- **Real Disease Detection**: TensorFlow-based plant leaf classification system
+- **Backend Integration**: Flask API for machine learning inference
+- **Image Upload**: Support for PNG, JPG, JPEG formats up to 16MB
+- **Smart Fallback**: Local analysis when backend is unavailable
 - Treatment recommendations based on detected conditions
-- Prevention tips for common agricultural issues
 - Confidence scoring for analysis results
+- Prevention tips for common agricultural issues
 
 ### 🌍 Localized Content
 - Farming tips specific to East African agriculture
@@ -33,17 +36,35 @@ An AI-powered Progressive Web Application designed to assist farmers with crop m
 
 ### Prerequisites
 - Modern web browser (Chrome, Firefox, Safari, Edge)
+- Python 3.7+ (for plant classification backend)
 - Internet connection for initial setup
 - Camera-enabled device for crop analysis (optional)
 
-### Installation
+### Quick Start
 
-#### Option 1: Direct Access
+#### Option 1: Complete System (Recommended)
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd JuaAI-Smart-Farmer-App
+   ```
+
+2. **Start the Plant Classifier System**
+   ```bash
+   ./start_plant_classifier.sh
+   ```
+   This starts both the Flask backend (port 5000) and frontend (port 8000)
+
+3. **Access the Application**
+   - Open http://localhost:8000 in your browser
+   - Navigate to "Crop AI" tab for plant disease detection
+
+#### Option 2: Frontend Only
 1. Open your web browser
 2. Navigate to the app URL
-3. The app will load and be ready to use
+3. The app will load with simulated AI analysis
 
-#### Option 2: Install as PWA
+#### Option 3: Install as PWA
 1. Open the app in your browser
 2. Look for "Install App" or "Add to Home Screen" option
 3. Follow the browser prompts to install
@@ -62,9 +83,11 @@ An AI-powered Progressive Web Application designed to assist farmers with crop m
 - Make informed farming decisions
 
 #### 3. Crop Disease Detection
-- Take or upload a photo of your crop
-- Wait for AI analysis (2-5 seconds)
-- Review disease identification and treatment recommendations
+- Upload or take a photo of your crop
+- **AI Analysis**: Real-time machine learning classification
+- **Backend Processing**: TensorFlow-based disease detection
+- Review detailed results with confidence scores and treatment recommendations
+- **Offline Capability**: Local analysis when backend unavailable
 
 #### 4. Farming Tips
 - Browse categorized agricultural advice
@@ -76,12 +99,17 @@ An AI-powered Progressive Web Application designed to assist farmers with crop m
 ```
 JuaAI-Smart-Farmer-App/
 ├── index.html                 # Main application interface
+├── backend/                   # Flask backend for AI classification
+│   ├── app.py                 # Flask server with ML endpoints
+│   ├── train_model.py         # TensorFlow model training script
+│   ├── requirements.txt       # Python dependencies
+│   └── uploads/               # Temporary image storage
 ├── styles/
 │   └── styles.css            # Application styling and responsive design
 ├── scripts/
 │   ├── app.js                # Main application logic and UI management
 │   ├── weather.js            # Weather API integration and forecasting
-│   ├── cropAI.js             # AI disease detection and analysis
+│   ├── cropAI.js             # AI disease detection with backend integration
 │   └── storage.js            # Local storage and data management
 ├── data/
 │   ├── diseases.json         # Crop disease database
@@ -93,7 +121,9 @@ JuaAI-Smart-Farmer-App/
 │   └── app-icon.svg          # Application icon for PWA
 ├── service-worker.js         # Service worker for offline functionality
 ├── manifest.json             # PWA manifest for installation
+├── start_plant_classifier.sh # Startup script for complete system
 ├── README.md                 # Project documentation
+├── README_PLANT_CLASSIFIER.md # Detailed classifier documentation
 └── LICENSE                   # License information
 ```
 
@@ -101,10 +131,13 @@ JuaAI-Smart-Farmer-App/
 
 ### Technologies Used
 - **Frontend**: HTML5, CSS3, JavaScript (ES6+)
-- **Architecture**: Progressive Web App (PWA)
+- **Backend**: Python Flask with TensorFlow integration
+- **AI/ML**: TensorFlow for plant disease classification
+- **Architecture**: Progressive Web App (PWA) with microservices
 - **Storage**: Local Storage, IndexedDB (via abstraction)
 - **Offline**: Service Worker for caching and offline functionality
 - **Responsive**: CSS Grid and Flexbox for mobile-first design
+- **Image Processing**: PIL/Pillow for backend image analysis
 
 ### Browser Support
 - Chrome 70+
@@ -162,10 +195,26 @@ JuaAI-Smart-Farmer-App/
 ## 🚀 Deployment
 
 ### Local Development
-1. Clone the repository
-2. Open `index.html` in a web browser
-3. For local server: `python -m http.server 8000`
-4. Access via `http://localhost:8000`
+1. **Backend Setup**
+   ```bash
+   cd backend
+   pip install -r requirements.txt
+   python app.py
+   ```
+
+2. **Frontend Setup**
+   ```bash
+   python -m http.server 8000
+   ```
+
+3. **Complete System**
+   ```bash
+   ./start_plant_classifier.sh
+   ```
+
+4. **Access Application**
+   - Frontend: http://localhost:8000
+   - Backend API: http://localhost:5000
 
 ### Production Deployment
 1. Upload files to web server
