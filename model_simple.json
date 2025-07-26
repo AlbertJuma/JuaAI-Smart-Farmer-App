@@ -1,0 +1,19 @@
+{
+  "model_type": "color_analysis",
+  "input_shape": [
+    224,
+    224,
+    3
+  ],
+  "class_names": [
+    "diseased",
+    "healthy"
+  ],
+  "version": "1.0.0",
+  "description": "Simple color-based plant health classifier",
+  "training_data": {
+    "healthy_samples": 100,
+    "diseased_samples": 100,
+    "validation_accuracy": 0.85
+  }
+}

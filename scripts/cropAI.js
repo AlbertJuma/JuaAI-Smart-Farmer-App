@@ -2,6 +2,7 @@
 class CropAI {
     constructor() {
         this.diseases = null;
+        this.apiBaseUrl = window.location.origin; // Use same origin for API calls
         this.loadDiseaseDatabase();
     }
 
@@ -19,25 +20,116 @@ class CropAI {
         try {
             app.showLoading(true);
             
-            // Simulate AI analysis with realistic delay
-            await this.delay(2000 + Math.random() * 3000);
+            // First try to use the Flask backend
+            const backendResult = await this.analyzeWithBackend(imageFile);
             
-            // For demo purposes, simulate analysis based on file properties
-            const analysisResult = this.simulateAnalysis(imageFile);
+            if (backendResult && backendResult.status !== 'error') {
+                // Backend analysis successful
+                this.displayAnalysisResult(backendResult);
+                storageManager.saveAnalysisResult(this.convertBackendResult(backendResult));
+                app.showNotification('Crop analysis completed using AI model!', 'success');
+                return;
+            }
             
-            // Store the analysis result
-            storageManager.saveAnalysisResult(analysisResult);
-            
-            // Display the result
-            this.displayAnalysisResult(analysisResult);
-            
-            app.showNotification('Crop analysis completed!', 'success');
+            // Fall back to local simulation
+            console.warn('Backend analysis failed, falling back to local simulation');
+            await this.analyzeWithLocalSimulation(imageFile);
             
         } catch (error) {
             console.error('Analysis error:', error);
             app.showNotification('Error analyzing image. Please try again.', 'error');
         } finally {
             app.showLoading(false);
+        }
+    }
+    
+    async analyzeWithBackend(imageFile) {
+        try {
+            // Check if backend is available
+            const healthCheck = await fetch(`${this.apiBaseUrl}/api/health`);
+            if (!healthCheck.ok) {
+                throw new Error('Backend not available');
+            }
+            
+            // Create form data for image upload
+            const formData = new FormData();
+            formData.append('image', imageFile);
+            
+            // Send prediction request
+            const response = await fetch(`${this.apiBaseUrl}/api/predict`, {
+                method: 'POST',
+                body: formData
+            });
+            
+            if (!response.ok) {
+                throw new Error(`Backend error: ${response.status}`);
+            }
+            
+            const result = await response.json();
+            
+            if (result.status === 'error') {
+                throw new Error(result.error || 'Backend prediction error');
+            }
+            
+            return result;
+            
+        } catch (error) {
+            console.error('Backend analysis error:', error);
+            return null;
+        }
+    }
+    
+    async analyzeWithLocalSimulation(imageFile) {
+        // Simulate AI analysis with realistic delay
+        await this.delay(2000 + Math.random() * 3000);
+        
+        // For demo purposes, simulate analysis based on file properties
+        const analysisResult = this.simulateAnalysis(imageFile);
+        
+        // Store the analysis result
+        storageManager.saveAnalysisResult(analysisResult);
+        
+        // Display the result
+        this.displayAnalysisResult(analysisResult);
+        
+        app.showNotification('Crop analysis completed using local simulation!', 'success');
+    }
+    
+    convertBackendResult(backendResult) {
+        // Convert backend result format to local storage format
+        const suggestions = backendResult.suggestions || {};
+        const recommendations = [];
+        
+        if (suggestions.immediate_actions) {
+            recommendations.push(...suggestions.immediate_actions);
+        }
+        if (suggestions.treatment_options) {
+            recommendations.push(...suggestions.treatment_options);
+        }
+        if (suggestions.maintenance_tips) {
+            recommendations.push(...suggestions.maintenance_tips);
+        }
+        
+        return {
+            id: Date.now(),
+            date: new Date().toISOString(),
+            status: backendResult.prediction === 'healthy' ? 'healthy' : 'disease_detected',
+            confidence: backendResult.confidence,
+            result: backendResult.prediction === 'healthy' ? 'Healthy Crop' : 'Disease Detected',
+            description: this.getDescriptionForPrediction(backendResult.prediction),
+            recommendations: recommendations,
+            severity: suggestions.severity || (backendResult.prediction === 'healthy' ? 'none' : 'medium'),
+            color: this.getSeverityColor(suggestions.severity || (backendResult.prediction === 'healthy' ? 'none' : 'medium')),
+            backend_used: true,
+            model_info: backendResult.model_info
+        };
+    }
+    
+    getDescriptionForPrediction(prediction) {
+        if (prediction === 'healthy') {
+            return 'Your crop appears to be healthy with no visible signs of disease.';
+        } else {
+            return 'Disease detected in your crop. Please follow the recommended treatment actions.';
         }
     }
 
@@ -73,7 +165,8 @@ class CropAI {
                 'Ensure adequate nutrition'
             ],
             severity: 'none',
-            color: '#4CAF50'
+            color: '#4CAF50',
+            backend_used: false
         };
     }
 
@@ -89,12 +182,14 @@ class CropAI {
             severity: disease.severity || 'medium',
             color: this.getSeverityColor(disease.severity),
             symptoms: disease.symptoms || [],
-            prevention: disease.prevention || []
+            prevention: disease.prevention || [],
+            backend_used: false
         };
     }
 
     getSeverityColor(severity) {
         switch (severity) {
+            case 'none': return '#4CAF50';
             case 'low': return '#FFC107';
             case 'medium': return '#FF9800';
             case 'high': return '#F44336';
@@ -112,14 +207,31 @@ class CropAI {
         // Show the result container
         resultContainer.classList.remove('hidden');
 
+        // Determine if this is a backend result
+        const isBackendResult = result.model_info || result.backend_used;
+        const confidence = result.confidence || 0;
+        const prediction = result.prediction || result.result;
+        const description = result.description || this.getDescriptionForPrediction(result.prediction);
+        
+        // Get color for result
+        let resultColor = result.color || this.getSeverityColor(result.severity);
+        if (result.prediction === 'healthy' || result.status === 'healthy') {
+            resultColor = '#4CAF50';
+        }
+
         // Display main result
         diseaseResultEl.innerHTML = `
-            <div class="analysis-main" style="border-left-color: ${result.color};">
+            <div class="analysis-main" style="border-left-color: ${resultColor};">
                 <div class="result-header">
-                    <h4 style="color: ${result.color};">${result.result}</h4>
-                    <span class="confidence">Confidence: ${Math.round(result.confidence)}%</span>
+                    <h4 style="color: ${resultColor};">${prediction}</h4>
+                    <span class="confidence">Confidence: ${Math.round(confidence)}%</span>
                 </div>
-                <p class="result-description">${result.description}</p>
+                <p class="result-description">${description}</p>
+                ${isBackendResult ? `
+                    <div class="model-info">
+                        <small><strong>Analysis by:</strong> ${result.model_info?.type || 'AI Model'}</small>
+                    </div>
+                ` : ''}
                 ${result.symptoms && result.symptoms.length > 0 ? `
                     <div class="symptoms-section">
                         <h5>Symptoms:</h5>
@@ -131,9 +243,84 @@ class CropAI {
             </div>
         `;
 
-        // Display recommendations
-        if (result.recommendations && result.recommendations.length > 0) {
-            treatmentSuggestionsEl.innerHTML = `
+        // Display recommendations/suggestions
+        this.displaySuggestions(treatmentSuggestionsEl, result);
+
+        // Scroll to result
+        resultContainer.scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    displaySuggestions(container, result) {
+        let suggestionsHTML = '';
+        
+        // Handle backend suggestions format
+        if (result.suggestions) {
+            const suggestions = result.suggestions;
+            
+            if (suggestions.immediate_actions && suggestions.immediate_actions.length > 0) {
+                suggestionsHTML += `
+                    <h4>Immediate Actions:</h4>
+                    <div class="recommendations-list">
+                        ${suggestions.immediate_actions.map((action, index) => `
+                            <div class="recommendation-item urgent">
+                                <span class="rec-number">${index + 1}</span>
+                                <span class="rec-text">${action}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+            
+            if (suggestions.treatment_options && suggestions.treatment_options.length > 0) {
+                suggestionsHTML += `
+                    <h4>Treatment Options:</h4>
+                    <div class="recommendations-list">
+                        ${suggestions.treatment_options.map((treatment, index) => `
+                            <div class="recommendation-item">
+                                <span class="rec-number">${index + 1}</span>
+                                <span class="rec-text">${treatment}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+            
+            if (suggestions.maintenance_tips && suggestions.maintenance_tips.length > 0) {
+                suggestionsHTML += `
+                    <h4>Maintenance Tips:</h4>
+                    <div class="recommendations-list">
+                        ${suggestions.maintenance_tips.map((tip, index) => `
+                            <div class="recommendation-item maintenance">
+                                <span class="rec-number">${index + 1}</span>
+                                <span class="rec-text">${tip}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+            
+            if (suggestions.prevention_tips && suggestions.prevention_tips.length > 0) {
+                suggestionsHTML += `
+                    <div class="prevention-section">
+                        <h5>Prevention Tips:</h5>
+                        <ul class="prevention-list">
+                            ${suggestions.prevention_tips.map(tip => `<li>${tip}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+            
+            if (suggestions.urgency) {
+                suggestionsHTML += `
+                    <div class="urgency-notice">
+                        <strong>⚠️ Urgency:</strong> ${suggestions.urgency}
+                    </div>
+                `;
+            }
+        }
+        // Handle local simulation format
+        else if (result.recommendations && result.recommendations.length > 0) {
+            suggestionsHTML += `
                 <h4>Recommendations:</h4>
                 <div class="recommendations-list">
                     ${result.recommendations.map((rec, index) => `
@@ -153,11 +340,10 @@ class CropAI {
                 ` : ''}
             `;
         } else {
-            treatmentSuggestionsEl.innerHTML = '<p>No specific recommendations needed.</p>';
+            suggestionsHTML = '<p>No specific recommendations needed.</p>';
         }
-
-        // Scroll to result
-        resultContainer.scrollIntoView({ behavior: 'smooth' });
+        
+        container.innerHTML = suggestionsHTML;
     }
 
     getFallbackDiseases() {
@@ -377,6 +563,42 @@ const cropAIStyles = `
 
     .prevention-list li {
         margin-bottom: 0.25rem;
+    }
+    
+    .model-info {
+        margin-top: 1rem;
+        padding-top: 0.5rem;
+        border-top: 1px solid #e0e0e0;
+        color: #666;
+        font-size: 0.9rem;
+    }
+    
+    .recommendation-item.urgent {
+        border-left-color: #f44336;
+        background: #fff3e0;
+    }
+    
+    .recommendation-item.urgent .rec-number {
+        background: #f44336;
+    }
+    
+    .recommendation-item.maintenance {
+        border-left-color: #4caf50;
+        background: #f1f8e9;
+    }
+    
+    .recommendation-item.maintenance .rec-number {
+        background: #4caf50;
+    }
+    
+    .urgency-notice {
+        background: #fff3cd;
+        border: 1px solid #ffeaa7;
+        color: #856404;
+        padding: 0.75rem;
+        border-radius: 6px;
+        margin-top: 1rem;
+        font-size: 0.9rem;
     }
 
     @media (max-width: 768px) {
