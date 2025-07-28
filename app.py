@@ -17,6 +17,14 @@ from flask import Flask, request, jsonify, render_template, send_from_directory
 from flask_cors import CORS
 import logging
 
+# Import Gemini AI helper
+try:
+    from gemini_helper import get_enhanced_explanation
+    GEMINI_HELPER_AVAILABLE = True
+except ImportError as e:
+    GEMINI_HELPER_AVAILABLE = False
+    logging.warning(f"Gemini helper not available: {e}")
+
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -389,6 +397,136 @@ def predict():
         logger.error(f"Unexpected error in prediction: {str(e)}")
         return jsonify({
             'error': 'Internal server error occurred during prediction',
+            'status': 'error',
+            'details': str(e) if app.debug else None
+        }), 500
+
+@app.route('/api/analyze_leaf', methods=['POST'])
+def analyze_leaf():
+    """
+    Enhanced leaf analysis endpoint with Gemini AI explanations
+    
+    This endpoint provides the same diagnosis functionality as /api/predict
+    but includes enhanced explanations powered by Google Gemini AI.
+    """
+    try:
+        # Check if file was uploaded
+        if 'image' not in request.files:
+            return jsonify({
+                'error': 'No image file provided',
+                'status': 'error'
+            }), 400
+        
+        file = request.files['image']
+        
+        # Check if file is selected
+        if file.filename == '':
+            return jsonify({
+                'error': 'No file selected',
+                'status': 'error'
+            }), 400
+        
+        # Check file size
+        if len(file.read()) > MAX_FILE_SIZE:
+            return jsonify({
+                'error': 'File too large. Maximum size is 16MB',
+                'status': 'error'
+            }), 413
+        
+        # Reset file pointer
+        file.seek(0)
+        
+        # Validate file type
+        if not file.content_type.startswith('image/'):
+            return jsonify({
+                'error': 'Invalid file type. Please upload an image file',
+                'status': 'error'
+            }), 400
+        
+        # Load and process image
+        try:
+            image = Image.open(io.BytesIO(file.read()))
+        except Exception as e:
+            return jsonify({
+                'error': f'Invalid image file: {str(e)}',
+                'status': 'error'
+            }), 400
+        
+        # Make prediction using existing classifier logic
+        result = classifier.predict(image)
+        
+        if result['status'] == 'error':
+            return jsonify(result), 500
+        
+        # Add treatment suggestions (reusing existing logic)
+        prediction_class = result['prediction']
+        suggestions = {}
+        
+        if prediction_class == 'diseased':
+            suggestions = {
+                'immediate_actions': TREATMENT_SUGGESTIONS['diseased']['general'][:3],
+                'treatment_options': TREATMENT_SUGGESTIONS['diseased']['specific_tips'][:3],
+                'prevention_tips': TREATMENT_SUGGESTIONS['diseased']['prevention'][:3],
+                'severity': 'medium',  # Could be determined by confidence
+                'urgency': 'Monitor closely and take action within 24-48 hours'
+            }
+        elif prediction_class == 'healthy':
+            suggestions = {
+                'maintenance_tips': TREATMENT_SUGGESTIONS['healthy']['maintenance'][:3],
+                'prevention_tips': TREATMENT_SUGGESTIONS['healthy']['prevention'][:3],
+                'next_steps': ['Continue monitoring', 'Maintain current care routine']
+            }
+        
+        # Prepare diagnosis result for Gemini AI
+        diagnosis_data = {
+            'prediction': prediction_class,
+            'confidence': round(result['confidence'], 2),
+            'status': result.get('status', 'success'),
+            'suggestions': suggestions,
+            'timestamp': int(time.time() * 1000),
+            'model_info': {
+                'type': result.get('model_type', 'Unknown'),
+                'version': '1.0.0',
+                'classes': classifier.class_names,
+                'status': result.get('status', 'unknown')
+            }
+        }
+        
+        # Generate Gemini AI enhanced explanation
+        gemini_ai_response = None
+        if GEMINI_HELPER_AVAILABLE:
+            try:
+                gemini_ai_response = get_enhanced_explanation(diagnosis_data)
+                logger.info("Gemini AI explanation generated successfully")
+            except Exception as e:
+                logger.warning(f"Error generating Gemini AI explanation: {str(e)}")
+                gemini_ai_response = "Enhanced explanation temporarily unavailable. Please refer to the standard diagnosis and suggestions."
+        else:
+            logger.warning("Gemini helper not available, providing fallback explanation")
+            gemini_ai_response = "Enhanced AI explanations are not currently available. Please refer to the diagnosis and treatment suggestions provided."
+        
+        # Prepare final response with both original diagnosis and Gemini AI response
+        response = {
+            'diagnosis': diagnosis_data,  # Original diagnosis logic preserved
+            'gemini_ai_response': gemini_ai_response,  # Enhanced AI explanation
+            'enhanced_features': {
+                'gemini_ai_available': GEMINI_HELPER_AVAILABLE and gemini_ai_response is not None,
+                'explanation_source': 'gemini_ai' if (GEMINI_HELPER_AVAILABLE and gemini_ai_response and 'temporarily unavailable' not in gemini_ai_response) else 'fallback'
+            }
+        }
+        
+        # Add mock note if using mock predictions
+        if result.get('note'):
+            response['diagnosis']['note'] = result['note']
+        
+        logger.info(f"Leaf analysis completed: {prediction_class} ({result['confidence']:.1f}%) with Gemini AI explanation")
+        
+        return jsonify(response)
+        
+    except Exception as e:
+        logger.error(f"Unexpected error in leaf analysis: {str(e)}")
+        return jsonify({
+            'error': 'Internal server error occurred during leaf analysis',
             'status': 'error',
             'details': str(e) if app.debug else None
         }), 500
